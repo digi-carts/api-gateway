@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: ${AUTH_SERVICE_URL:http://auth-service:3001}
+          predicates:
+            - Path=/api/auth/**,/api/address/**
+        - id: platform-service
+          uri: ${PLATFORM_SERVICE_URL:http://platform-service:3002}
+          predicates:
+            - Path=/api/platform/**,/api/subscriptions/**,/api/admin/**,/api/templates/**,/api/support/**
+        - id: notification-service
+          uri: ${NOTIFICATION_SERVICE_URL:http://notification-service:3003}
+          predicates:
+            - Path=/api/notifications/**
+        - id: catalog-service
+          uri: ${CATALOG_SERVICE_URL:http://catalog-service:3004}
+          predicates:
+            - Path=/api/catalog/**,/api/products/**,/api/categories/**,/api/upload/**
+        - id: order-service
+          uri: ${ORDER_SERVICE_URL:http://order-service:3005}
+          predicates:
+            - Path=/api/orders/**,/api/cart/**,/api/returns/**
+        - id: payment-service
+          uri: ${PAYMENT_SERVICE_URL:http://payment-service:3006}
+          predicates:
+            - Path=/api/payments/**,/api/webhooks/**
+        - id: shipping-service
+          uri: ${SHIPPING_SERVICE_URL:http://shipping-service:3007}
+          predicates:
+            - Path=/api/shipping/**
+        - id: store-service
+          uri: ${STORE_SERVICE_URL:http://store-service:3008}
+          predicates:
+            - Path=/api/stores/**,/api/domain/**,/api/pages/**
+        - id: storefront-service
+          uri: ${STOREFRONT_SERVICE_URL:http://storefront-service:3009}
+          predicates:
+            - Path=/api/storefront/**
+        - id: offer-service
+          uri: ${OFFER_SERVICE_URL:http://offer-service:3010}
+          predicates:
+            - Path=/api/offers/**
+        - id: billing-service
+          uri: ${BILLING_SERVICE_URL:http://billing-service:3011}
+          predicates:
+            - Path=/api/billing/**,/api/bills/**
+        - id: audit-log-service
+          uri: ${AUDIT_LOG_SERVICE_URL:http://audit-log-service:3012}
+          predicates:
+            - Path=/api/audit/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOriginPatterns: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+server:
+  port: ${PORT:3000}
+app:
+  jwt:
+    secret: ${JWT_SECRET}
