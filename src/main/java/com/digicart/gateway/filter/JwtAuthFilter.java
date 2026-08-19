@@ -20,6 +20,9 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+/**
+ * Global Spring Cloud Gateway filter that validates HMAC JWTs and injects {@code X-User-Id} / {@code X-User-Role}.
+ */
 @Component
 public class JwtAuthFilter implements GlobalFilter, Ordered {
 
@@ -28,6 +31,7 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
             "/api/auth/register",
             "/api/auth/refresh",
             "/api/storefront/**",
+            "/health",
             "/api/health",
             "/actuator/**"
     );
@@ -37,6 +41,13 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
     @Value("${app.jwt.secret}")
     private String jwtSecret;
 
+    /**
+     * Allows configured public paths; otherwise requires a valid Bearer JWT and copies {@code sub}/{@code role} onto headers.
+     *
+     * @param exchange current request/response
+     * @param chain remaining gateway filters
+     * @return completion signal; {@code 401} when the token is missing or invalid
+     */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
@@ -79,6 +90,11 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
         return PUBLIC_PATHS.stream().anyMatch(pattern -> pathMatcher.match(pattern, path));
     }
 
+    /**
+     * Runs before default routing filters so unauthorized requests never reach downstream services.
+     *
+     * @return {@code -1}
+     */
     @Override
     public int getOrder() {
         return -1;
