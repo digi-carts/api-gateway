@@ -129,3 +129,7 @@ GCP: Artifact Registry `us-east1-docker.pkg.dev/{project}/digi-cart/`. Secret `G
 - [auth-service](https://github.com/digi-carts/auth-service/blob/stage/doc/README.md)
 - [catalog-service](https://github.com/digi-carts/catalog-service/blob/stage/doc/README.md)
 - [order-service](https://github.com/digi-carts/order-service/blob/stage/doc/README.md)
+
+## REST API reference
+
+See [api.md](api.md) for every HTTP endpoint generated from Spring controllers.

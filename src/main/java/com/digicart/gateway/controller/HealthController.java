@@ -13,7 +13,10 @@ import java.util.Map;
  */
 @RestController
 public class HealthController {
-
+    /**
+     * Handles {@code GET /health} and {@code GET /api/health}.
+     * @return reactive completion value
+     */
     @GetMapping(path = {"/health", "/api/health"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<Map<String, String>> health() {
         return Mono.just(Map.of("status", "ok", "service", "api-gateway"));
