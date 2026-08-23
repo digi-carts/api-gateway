@@ -52,6 +52,8 @@ spring:
           uri: ${AUDIT_LOG_SERVICE_URL:http://audit-log-service:3012}
           predicates:
             - Path=/api/audit/**
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin, RETAIN_FIRST
       globalcors:
         corsConfigurations:
           '[/**]':
