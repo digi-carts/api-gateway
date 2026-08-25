@@ -27,7 +27,7 @@ spring:
         - id: payment-service
           uri: ${PAYMENT_SERVICE_URL:http://payment-service:3006}
           predicates:
-            - Path=/api/payments/**,/api/webhooks/**
+            - Path=/api/payments/**,/api/webhooks/**,/api/store-payment-config/**,/api/platform-payment-config/**
         - id: shipping-service
           uri: ${SHIPPING_SERVICE_URL:http://shipping-service:3007}
           predicates:
@@ -35,7 +35,7 @@ spring:
         - id: store-service
           uri: ${STORE_SERVICE_URL:http://store-service:3008}
           predicates:
-            - Path=/api/stores/**,/api/domain/**,/api/pages/**
+            - Path=/api/stores/**,/api/store/**,/api/domain/**,/api/pages/**
         - id: storefront-service
           uri: ${STOREFRONT_SERVICE_URL:http://storefront-service:3009}
           predicates:
