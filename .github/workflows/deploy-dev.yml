@@ -39,7 +39,16 @@ jobs:
           cache-to: type=gha,mode=max
       - name: Deploy to Cloud Run (dev)
         run: |
+          SERVICE_MONITOR_URL=$(gcloud run services describe digi-cart-service-monitor-dev \
+            --region ${{ env.REGION }} \
+            --project digi-carts-dev \
+            --format='value(status.url)' 2>/dev/null || echo "")
+          EXTRA_ENV=""
+          if [ -n "$SERVICE_MONITOR_URL" ]; then
+            EXTRA_ENV="--update-env-vars SERVICE_MONITOR_URL=${SERVICE_MONITOR_URL}"
+          fi
           gcloud run services update ${{ env.SERVICE }} \
             --region ${{ env.REGION }} \
             --image ${{ env.IMAGE }}-dev:latest \
+            $EXTRA_ENV \
             --quiet

@@ -8,6 +8,10 @@ spring:
           uri: ${AUTH_SERVICE_URL:http://auth-service:3001}
           predicates:
             - Path=/api/auth/**,/api/address/**
+        - id: service-monitor
+          uri: ${SERVICE_MONITOR_URL:http://service-monitor:3010}
+          predicates:
+            - Path=/api/platform/services/**
         - id: platform-service
           uri: ${PLATFORM_SERVICE_URL:http://platform-service:3002}
           predicates:
