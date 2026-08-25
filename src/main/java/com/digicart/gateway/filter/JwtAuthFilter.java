@@ -31,6 +31,7 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
             "/api/auth/register",
             "/api/auth/refresh",
             "/api/storefront/**",
+            "/api/platform/platform-config",
             "/health",
             "/api/health",
             "/actuator/**"
