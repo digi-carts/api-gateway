@@ -15,7 +15,7 @@ spring:
         - id: platform-service
           uri: ${PLATFORM_SERVICE_URL:http://platform-service:3002}
           predicates:
-            - Path=/api/platform/**,/api/subscriptions/**,/api/admin/**,/api/templates/**,/api/support/**
+            - Path=/api/platform/**,/api/subscriptions/**,/api/admin/**,/api/templates/**
         - id: notification-service
           uri: ${NOTIFICATION_SERVICE_URL:http://notification-service:3003}
           predicates:
