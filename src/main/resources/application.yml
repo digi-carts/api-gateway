@@ -61,7 +61,11 @@ spring:
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOriginPatterns: "*"
+            allowedOriginPatterns:
+              - "https://*.run.app"
+              - "https://admin.ecom.app"
+              - "https://ecom.app"
+              - "http://localhost:[*]"
             allowedMethods: "*"
             allowedHeaders: "*"
             allowCredentials: true
