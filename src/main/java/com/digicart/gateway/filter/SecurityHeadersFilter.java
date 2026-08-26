@@ -12,7 +12,10 @@ public class SecurityHeadersFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        exchange.getResponse().getHeaders().set("X-Content-Type-Options", "nosniff");
+        exchange.getResponse().beforeCommit(() -> {
+            exchange.getResponse().getHeaders().set("X-Content-Type-Options", "nosniff");
+            return Mono.empty();
+        });
         return chain.filter(exchange);
     }
 
