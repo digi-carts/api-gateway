@@ -34,13 +34,19 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
             "/api/auth/refresh",
             "/api/storefront/**",
             "/api/platform/platform-config",
-            "/api/catalog/products",
-            "/api/catalog/categories",
+            "/api/platform/templates",
             "/api/store/pages/public/**",
             "/api/shipping/rates",
             "/health",
             "/api/health",
             "/actuator/**"
+    );
+
+    private static final List<String> PUBLIC_GET_PATHS = List.of(
+            "/api/catalog/products",
+            "/api/catalog/products/**",
+            "/api/catalog/categories",
+            "/api/catalog/categories/**"
     );
 
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
@@ -59,7 +65,7 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
 
-        if (isPublicPath(path)) {
+        if (isPublicPath(path, exchange.getRequest().getMethod())) {
             return chain.filter(exchange);
         }
 
@@ -99,8 +105,10 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
         return exchange.getResponse().writeWith(Mono.just(buffer));
     }
 
-    private boolean isPublicPath(String path) {
-        return PUBLIC_PATHS.stream().anyMatch(pattern -> pathMatcher.match(pattern, path));
+    private boolean isPublicPath(String path, org.springframework.http.HttpMethod method) {
+        if (PUBLIC_PATHS.stream().anyMatch(pattern -> pathMatcher.match(pattern, path))) return true;
+        return org.springframework.http.HttpMethod.GET.equals(method)
+                && PUBLIC_GET_PATHS.stream().anyMatch(pattern -> pathMatcher.match(pattern, path));
     }
 
     /**

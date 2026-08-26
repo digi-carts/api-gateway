@@ -4,6 +4,12 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: catalog-service-api
+          uri: ${CATALOG_SERVICE_URL:http://catalog-service:3004}
+          predicates:
+            - Path=/api/catalog/**
+          filters:
+            - RewritePath=/api/catalog/(?<rest>.*), /api/$\{rest}
         - id: auth-service
           uri: ${AUTH_SERVICE_URL:http://auth-service:3001}
           predicates:
