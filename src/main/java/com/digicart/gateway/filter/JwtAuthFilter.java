@@ -44,9 +44,7 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
 
     private static final List<String> PUBLIC_GET_PATHS = List.of(
             "/api/catalog/products",
-            "/api/catalog/products/**",
-            "/api/catalog/categories",
-            "/api/catalog/categories/**"
+            "/api/catalog/categories"
     );
 
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
