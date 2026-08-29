@@ -1,6 +1,31 @@
 # Changelog
 
-All notable changes to **api-gateway** are documented in this file.
+## [1.2.0] - 2026-08-29
+
+### Features
+- add /api/v1 versioning to all routes
+- route /api/platform/services/** to service-monitor
+- add JavaDoc, health aliases, and component tests
+
+### Bug Fixes
+- route /api/v1/catalog/products and /api/v1/catalog/categories to correct controller paths
+- use WebFilter instead of GlobalFilter for security headers (covers actuator endpoints)
+- use beforeCommit to set X-Content-Type-Options on proxied responses
+- restrict catalog public GET to exact paths only (remove /** wildcards)
+- public catalog GET paths, security headers, and platform templates
+- JSON 401 body, public paths, security headers, CORS
+- remove dead /api/support/** gateway predicate
+- add platform-config to public paths and update gateway routes
+- deduplicate CORS headers from downstream services
+
+### Documentation
+- JavaDoc on public methods and REST API reference under doc/
+- add complete project documentation
+
+### CI/Build
+- fail PRs and stage deploys when tests fail
+- trigger first dev build
+- use separate GCP project IDs for dev (digi-carts-dev) and prod (digi-carts)All notable changes to **api-gateway** are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
