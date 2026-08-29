@@ -41,7 +41,7 @@ class JwtAuthFilterTest {
     @Test
     void publicLoginSkipsJwt() {
         AtomicBoolean chained = new AtomicBoolean(false);
-        ServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/api/auth/login").build());
+        ServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/api/v1/auth/login").build());
         filter.filter(exchange, ex -> {
             chained.set(true);
             return Mono.empty();
@@ -86,7 +86,7 @@ class JwtAuthFilterTest {
     void storefrontPathIsPublic() {
         AtomicBoolean chained = new AtomicBoolean(false);
         ServerWebExchange exchange = MockServerWebExchange.from(
-                MockServerHttpRequest.get("/api/storefront/resolve").build());
+                MockServerHttpRequest.get("/api/v1/storefront/resolve").build());
         filter.filter(exchange, ex -> {
             chained.set(true);
             return Mono.empty();
