@@ -4,58 +4,106 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: catalog-service-products
+          uri: ${CATALOG_SERVICE_URL:http://catalog-service:3004}
+          predicates:
+            - Path=/api/v1/catalog/products,/api/v1/catalog/products/**
+          filters:
+            - RewritePath=/api/v1/catalog/products(?<rest>.*), /api/products$\{rest}
+        - id: catalog-service-categories
+          uri: ${CATALOG_SERVICE_URL:http://catalog-service:3004}
+          predicates:
+            - Path=/api/v1/catalog/categories,/api/v1/catalog/categories/**
+          filters:
+            - RewritePath=/api/v1/catalog/categories(?<rest>.*), /api/categories$\{rest}
         - id: auth-service
           uri: ${AUTH_SERVICE_URL:http://auth-service:3001}
           predicates:
-            - Path=/api/auth/**,/api/address/**
+            - Path=/api/v1/auth/**,/api/v1/address/**
+          filters:
+            - RewritePath=/api/v1/(?<rest>.*), /api/$\{rest}
+        - id: service-monitor
+          uri: ${SERVICE_MONITOR_URL:http://service-monitor:3010}
+          predicates:
+            - Path=/api/v1/platform/services/**
+          filters:
+            - RewritePath=/api/v1/(?<rest>.*), /api/$\{rest}
         - id: platform-service
           uri: ${PLATFORM_SERVICE_URL:http://platform-service:3002}
           predicates:
-            - Path=/api/platform/**,/api/subscriptions/**,/api/admin/**,/api/templates/**,/api/support/**
+            - Path=/api/v1/platform/**,/api/v1/subscriptions/**,/api/v1/admin/**,/api/v1/templates/**
+          filters:
+            - RewritePath=/api/v1/(?<rest>.*), /api/$\{rest}
         - id: notification-service
           uri: ${NOTIFICATION_SERVICE_URL:http://notification-service:3003}
           predicates:
-            - Path=/api/notifications/**
+            - Path=/api/v1/notifications/**
+          filters:
+            - RewritePath=/api/v1/(?<rest>.*), /api/$\{rest}
         - id: catalog-service
           uri: ${CATALOG_SERVICE_URL:http://catalog-service:3004}
           predicates:
-            - Path=/api/catalog/**,/api/products/**,/api/categories/**,/api/upload/**
+            - Path=/api/v1/products/**,/api/v1/categories/**,/api/v1/upload/**
+          filters:
+            - RewritePath=/api/v1/(?<rest>.*), /api/$\{rest}
         - id: order-service
           uri: ${ORDER_SERVICE_URL:http://order-service:3005}
           predicates:
-            - Path=/api/orders/**,/api/cart/**,/api/returns/**
+            - Path=/api/v1/orders/**,/api/v1/cart/**,/api/v1/returns/**
+          filters:
+            - RewritePath=/api/v1/(?<rest>.*), /api/$\{rest}
         - id: payment-service
           uri: ${PAYMENT_SERVICE_URL:http://payment-service:3006}
           predicates:
-            - Path=/api/payments/**,/api/webhooks/**
+            - Path=/api/v1/payments/**,/api/v1/webhooks/**,/api/v1/store-payment-config/**,/api/v1/platform-payment-config/**
+          filters:
+            - RewritePath=/api/v1/(?<rest>.*), /api/$\{rest}
         - id: shipping-service
           uri: ${SHIPPING_SERVICE_URL:http://shipping-service:3007}
           predicates:
-            - Path=/api/shipping/**
+            - Path=/api/v1/shipping/**
+          filters:
+            - RewritePath=/api/v1/(?<rest>.*), /api/$\{rest}
         - id: store-service
           uri: ${STORE_SERVICE_URL:http://store-service:3008}
           predicates:
-            - Path=/api/stores/**,/api/domain/**,/api/pages/**
+            - Path=/api/v1/stores/**,/api/v1/store/**,/api/v1/domain/**,/api/v1/pages/**
+          filters:
+            - RewritePath=/api/v1/(?<rest>.*), /api/$\{rest}
         - id: storefront-service
           uri: ${STOREFRONT_SERVICE_URL:http://storefront-service:3009}
           predicates:
-            - Path=/api/storefront/**
+            - Path=/api/v1/storefront/**
+          filters:
+            - RewritePath=/api/v1/(?<rest>.*), /api/$\{rest}
         - id: offer-service
           uri: ${OFFER_SERVICE_URL:http://offer-service:3010}
           predicates:
-            - Path=/api/offers/**
+            - Path=/api/v1/offers/**
+          filters:
+            - RewritePath=/api/v1/(?<rest>.*), /api/$\{rest}
         - id: billing-service
           uri: ${BILLING_SERVICE_URL:http://billing-service:3011}
           predicates:
-            - Path=/api/billing/**,/api/bills/**
+            - Path=/api/v1/billing/**,/api/v1/bills/**
+          filters:
+            - RewritePath=/api/v1/(?<rest>.*), /api/$\{rest}
         - id: audit-log-service
           uri: ${AUDIT_LOG_SERVICE_URL:http://audit-log-service:3012}
           predicates:
-            - Path=/api/audit/**
+            - Path=/api/v1/audit/**
+          filters:
+            - RewritePath=/api/v1/(?<rest>.*), /api/$\{rest}
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin, RETAIN_FIRST
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOriginPatterns: "*"
+            allowedOriginPatterns:
+              - "https://*.run.app"
+              - "https://admin.ecom.app"
+              - "https://ecom.app"
+              - "http://localhost:[*]"
             allowedMethods: "*"
             allowedHeaders: "*"
             allowCredentials: true
