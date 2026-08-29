@@ -4,12 +4,18 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: catalog-service-api
+        - id: catalog-service-products
           uri: ${CATALOG_SERVICE_URL:http://catalog-service:3004}
           predicates:
-            - Path=/api/v1/catalog/**
+            - Path=/api/v1/catalog/products,/api/v1/catalog/products/**
           filters:
-            - RewritePath=/api/v1/(?<rest>.*), /api/$\{rest}
+            - RewritePath=/api/v1/catalog/products(?<rest>.*), /api/products$\{rest}
+        - id: catalog-service-categories
+          uri: ${CATALOG_SERVICE_URL:http://catalog-service:3004}
+          predicates:
+            - Path=/api/v1/catalog/categories,/api/v1/catalog/categories/**
+          filters:
+            - RewritePath=/api/v1/catalog/categories(?<rest>.*), /api/categories$\{rest}
         - id: auth-service
           uri: ${AUTH_SERVICE_URL:http://auth-service:3001}
           predicates:
@@ -37,7 +43,7 @@ spring:
         - id: catalog-service
           uri: ${CATALOG_SERVICE_URL:http://catalog-service:3004}
           predicates:
-            - Path=/api/v1/catalog/**,/api/v1/products/**,/api/v1/categories/**,/api/v1/upload/**
+            - Path=/api/v1/products/**,/api/v1/categories/**,/api/v1/upload/**
           filters:
             - RewritePath=/api/v1/(?<rest>.*), /api/$\{rest}
         - id: order-service
