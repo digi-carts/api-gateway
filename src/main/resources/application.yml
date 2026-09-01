@@ -94,6 +94,12 @@ spring:
             - Path=/api/v1/audit/**
           filters:
             - RewritePath=/api/v1/(?<rest>.*), /api/$\{rest}
+        - id: subscription-service
+          uri: ${SUBSCRIPTION_SERVICE_URL:http://subscription-service:3013}
+          predicates:
+            - Path=/api/v1/subscription/**
+          filters:
+            - RewritePath=/api/v1/(?<rest>.*), /api/$\{rest}
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin, RETAIN_FIRST
       globalcors:
