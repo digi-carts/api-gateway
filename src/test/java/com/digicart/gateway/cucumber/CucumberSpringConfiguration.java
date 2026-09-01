@@ -21,7 +21,9 @@ import org.springframework.test.context.TestPropertySource;
         "STOREFRONT_SERVICE_URL=http://127.0.0.1:65535",
         "OFFER_SERVICE_URL=http://127.0.0.1:65535",
         "BILLING_SERVICE_URL=http://127.0.0.1:65535",
-        "AUDIT_LOG_SERVICE_URL=http://127.0.0.1:65535"
+        "AUDIT_LOG_SERVICE_URL=http://127.0.0.1:65535",
+        "SUBSCRIPTION_SERVICE_URL=http://127.0.0.1:65535",
+        "spring.cloud.gcp.trace.enabled=false"
 })
 public class CucumberSpringConfiguration {
 }
