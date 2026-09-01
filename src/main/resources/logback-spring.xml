@@ -1,0 +1,47 @@
+<configuration>
+    <springProperty name="APP_NAME" source="spring.application.name" defaultValue="service"/>
+
+    <springProfile name="!local">
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                <providers>
+                    <timestamp/>
+                    <logLevel>
+                        <fieldName>severity</fieldName>
+                    </logLevel>
+                    <loggerName>
+                        <fieldName>logger</fieldName>
+                        <shortenedLoggerNameLength>36</shortenedLoggerNameLength>
+                    </loggerName>
+                    <message/>
+                    <mdc/>
+                    <arguments/>
+                    <stackTrace/>
+                    <pattern>
+                        <pattern>
+                            {
+                                "service": "${APP_NAME}",
+                                "logging.googleapis.com/trace": "projects/${GOOGLE_CLOUD_PROJECT:-local}/traces/%X{traceId:-}",
+                                "logging.googleapis.com/spanId": "%X{spanId:-}"
+                            }
+                        </pattern>
+                    </pattern>
+                </providers>
+            </encoder>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="local">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} [trace=%X{traceId:-},span=%X{spanId:-}] - %msg%n</pattern>
+            </encoder>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+</configuration>
