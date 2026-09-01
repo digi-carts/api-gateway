@@ -108,8 +108,22 @@ spring:
             allowedMethods: "*"
             allowedHeaders: "*"
             allowCredentials: true
+    gcp:
+      sql:
+        enabled: false
+      trace:
+        enabled: true
+        sampling-rate: 1.0
 server:
   port: ${PORT:3000}
 app:
   jwt:
     secret: ${JWT_SECRET}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  tracing:
+    sampling:
+      probability: 1.0
