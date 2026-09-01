@@ -101,6 +101,7 @@ spring:
           '[/**]':
             allowedOriginPatterns:
               - "https://*.run.app"
+              - "https://*.digi-carts.com"
               - "https://admin.ecom.app"
               - "https://ecom.app"
               - "http://localhost:[*]"
